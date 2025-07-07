@@ -22,3 +22,29 @@ The first project involved implementing and comparing Hadoop programs for calcul
   - Exact cardinality computations are feasible with global counters.
   - Approximate methods may be unreliable depending on filter design.
   - Rep-join is more efficient for triangle counting with memory optimization.
+
+The second project involved implementing and analyzing Spark programs for Twitter follower count and graph triangle counting, investigating aggregation efficiency before shuffling and the impact of MAX filters on performance.<br>
+- **Follower Counting**:
+  - Developed 5 Spark Scala programs:
+    - `RDD-G` (uses `groupByKey`)
+    - `RDD-R` (uses `reduceByKey`)
+    - `RDD-F` (uses `foldByKey`)
+    - `RDD-A` (uses `aggregateByKey`)
+    - `DSET` (uses DataFrame `groupBy().count()`)
+  - Key Insight:
+    - All except `RDD-G` perform **local aggregation within partitions** before shuffling.
+    - Mimics **MapReduce Combiner** behavior for optimization.
+    - `groupByKey` leads to higher network overhead due to lack of pre-aggregation.
+
+- **Triangle Counting**:
+  - Developed 4 programs using both RDD and DataFrame APIs:
+    - `RS-R` and `RS-D`: RS-join with RDD and DataFrame
+    - `Rep-R` and `Rep-D`: Rep-join with RDD and DataFrame
+  - All programs used a consistent **MAX_FILTER = 10,000** to limit dataset size.
+  - Output triangle count: **520,296**
+  - Evaluated on **AWS EMR clusters** with 4 and 8 worker nodes to compare performance.
+
+- **Conclusion**:
+  - Local aggregation via `reduceByKey`, `foldByKey`, `aggregateByKey`, and DataFrames enhances performance by reducing shuffle cost.
+  - Triangle counting methods yielded consistent results across APIs.
+  - Performance scales with cluster size, providing insight into Spark's parallel efficiency.
