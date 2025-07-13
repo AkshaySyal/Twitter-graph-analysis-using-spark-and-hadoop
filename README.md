@@ -1,4 +1,7 @@
 # Twitter-graph-analysis-using-spark-and-hadoop
+
+Dataset Link: https://drive.google.com/file/d/194jJLkBByKL2uf4mvzmiR2jvb-f33AyQ/view?usp=sharing
+
 The first project involved implementing and comparing Hadoop programs for calculating exact and approximate number of 2-hop paths and social-triangles (3-hop cycles) on a Twitter graph, utilizing methods like global counters, RS-join, and Rep-join, and analyzing their performance and scalability on local and AWS EMR environments.
 - **Exact Length-2 Path Count**:
   - Used a single MapReduce job.
